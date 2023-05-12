@@ -1,9 +1,12 @@
-//Package odoo contains client code of library
+// Package odoo contains client code of library
+//
 //go:generate ./generator/generator -u $ODOO_ADMIN -p $ODOO_PASSWORD -d $ODOO_DATABASE --url $ODOO_URL -o $ODOO_REPO_PATH --models $ODOO_MODELS
 package odoo
 
 import (
+	"encoding/xml"
 	"errors"
+	"fmt"
 	"log"
 
 	"github.com/kolo/xmlrpc"
@@ -240,6 +243,7 @@ func (c *Client) Create(model string, values []interface{}) ([]int64, error) {
 	if err != nil {
 		return nil, err
 	}
+
 	if len(values) == 1 {
 		return []int64{resp.(int64)}, nil
 	}
@@ -295,6 +299,8 @@ func (c *Client) Read(model string, ids []int64, options *Options, elem interfac
 	if err := convertFromDynamicToStatic(resp, elem); err != nil {
 		return err
 	}
+	xmlData, _ := xml.MarshalIndent(resp, "", "  ")
+	fmt.Println(xmlData)
 	return nil
 }
 
@@ -338,6 +344,7 @@ func (c *Client) ExecuteKw(method, model string, args []interface{}, options *Op
 	if err != nil {
 		return nil, err
 	}
+
 	return resp, nil
 }
 
