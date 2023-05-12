@@ -1,4 +1,4 @@
-module github.com/skilld-labs/go-odoo
+module github.com/orgmatileg/go-odoo
 
 go 1.18
 
