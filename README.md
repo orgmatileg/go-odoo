@@ -2,10 +2,10 @@
 
 An Odoo API client enabling Go programs to interact with Odoo in a simple and uniform way.
 
-[![GitHub license](https://img.shields.io/github/license/skilld-labs/go-odoo.svg)](https://github.com/skilld-labs/go-odoo/blob/master/LICENSE)
-[![GoDoc](https://godoc.org/github.com/skilld-labs/go-odoo?status.svg)](https://pkg.go.dev/github.com/skilld-labs/go-odoo?tab=doc)
-[![Go Report Card](https://goreportcard.com/badge/github.com/skilld-labs/go-odoo)](https://goreportcard.com/report/github.com/skilld-labs/go-odoo)
-[![GitHub issues](https://img.shields.io/github/issues/skilld-labs/go-odoo.svg)](https://github.com/skilld-labs/go-odoo/issues)
+[![GitHub license](https://img.shields.io/github/license/skilld-labs/go-odoo.svg)](https://github.com/orgmatileg/go-odoo/blob/master/LICENSE)
+[![GoDoc](https://godoc.org/github.com/orgmatileg/go-odoo?status.svg)](https://pkg.go.dev/github.com/orgmatileg/go-odoo?tab=doc)
+[![Go Report Card](https://goreportcard.com/badge/github.com/orgmatileg/go-odoo)](https://goreportcard.com/report/github.com/orgmatileg/go-odoo)
+[![GitHub issues](https://img.shields.io/github/issues/skilld-labs/go-odoo.svg)](https://github.com/orgmatileg/go-odoo/issues)
 
 ## Usage
 
@@ -26,13 +26,15 @@ export ODOO_MODELS="crm.lead"
 ```
 
 `ODOO_REPO_PATH` is the path where the repository will be downloaded (by default its GOPATH):
+
 ```
-export ODOO_REPO_PATH=$(echo $GOPATH | awk -F ':' '{ print $1 }')/src/github.com/skilld-labs/go-odoo
+export ODOO_REPO_PATH=$(echo $GOPATH | awk -F ':' '{ print $1 }')/src/github.com/orgmatileg/go-odoo
 ```
 
 Download library and generate models :
+
 ```
-GO111MODULE="off" go get github.com/skilld-labs/go-odoo
+GO111MODULE="off" go get github.com/orgmatileg/go-odoo
 cd $ODOO_REPO_PATH
 ls | grep -v "conversion.go\|generator\|go.mod\|go-odoo-generator\|go.sum\|ir_model_fields.go\|ir_model.go\|LICENSE\|odoo.go\|README.md\|types.go\|version.go" // keep only go-odoo core files
 GO111MODULE="off" go generate
@@ -62,7 +64,7 @@ If you're ok to work with those models, you can use this library instance, if no
 package main
 
 import (
-	odoo "github.com/skilld-labs/go-odoo"
+	odoo "github.com/orgmatileg/go-odoo"
 )
 
 func main() {
@@ -92,30 +94,35 @@ Generated models contains high level functions to interact with models in an eas
 It covers the most common usage and contains for each models those functions :
 
 ### Create
+
 ```go
 func (c *Client) CreateCrmLead(cl *CrmLead) (int64, error) {}
 func (c *Client) CreateCrmLeads(cls []*CrmLead) ([]int64, error) {} // !! Only for odoo 12+ versions !!
 ```
 
 ### Update
+
 ```go
 func (c *Client) UpdateCrmLead(cl *CrmLead) error {}
 func (c *Client) UpdateCrmLeads(ids []int64, cl *CrmLead) error {}
 ```
 
 ### Delete
+
 ```go
 func (c *Client) DeleteCrmLead(id int64) error {}
 func (c *Client) DeleteCrmLeads(ids []int64) error {}
 ```
 
 ### Get
+
 ```go
 func (c *Client) GetCrmLead(id int64) (*CrmLead, error) {}
 func (c *Client) GetCrmLeads(ids []int64) (*CrmLeads, error) {}
 ```
 
 ### Find
+
 Find is powerful and allow you to query a model and filter results. [Criteria and Options](#criteria-and-options)
 
 ```go
@@ -124,7 +131,9 @@ func (c *Client) FindCrmLeads(criteria *Criteria, options *Options) (*CrmLeads, 
 ```
 
 ### Conversion
+
 Generated models can be converted to `Many2One` easily.
+
 ```go
 func (cl *CrmLead) Many2One() *Many2One {}
 ```
@@ -164,6 +173,7 @@ func (m *Many2One) Get() int64 {}
 func NewRelation() *Relation {}
 func (r *Relation) Get() []int64 {}
 ```
+
 one2many and many2many are represented by the `Relation` type and allow you to execute special actions as defined [here](https://www.odoo.com/documentation/13.0/reference/orm.html#odoo.models.Model.write).
 
 ### Criteria and Options
@@ -215,4 +225,4 @@ func (c *Client) ExecuteKw(method, model string, args []interface{}, options *Op
 
 ## Issues
 
-- If you have an issue, please report it on the [issue tracker](https://github.com/skilld-labs/go-odoo/issues)
+- If you have an issue, please report it on the [issue tracker](https://github.com/orgmatileg/go-odoo/issues)
