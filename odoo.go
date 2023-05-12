@@ -299,8 +299,6 @@ func (c *Client) Read(model string, ids []int64, options *Options, elem interfac
 	if err := convertFromDynamicToStatic(resp, elem); err != nil {
 		return err
 	}
-	xmlData, _ := xml.MarshalIndent(resp, "", "  ")
-	fmt.Println(xmlData)
 	return nil
 }
 
@@ -343,6 +341,11 @@ func (c *Client) ExecuteKw(method, model string, args []interface{}, options *Op
 	resp, err := c.objectCall("execute_kw", []interface{}{c.cfg.Database, c.uid, c.cfg.Password, model, method, args, options})
 	if err != nil {
 		return nil, err
+	}
+
+	if resp != nil {
+		replyXmlb, _ := xml.MarshalIndent(resp, "", "  ")
+		fmt.Println(string(replyXmlb))
 	}
 
 	return resp, nil
