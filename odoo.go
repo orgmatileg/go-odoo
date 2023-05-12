@@ -390,6 +390,12 @@ func (c *Client) objectCall(serviceMethod string, args interface{}) (interface{}
 
 func (c *Client) call(x *xmlrpc.Client, serviceMethod string, args interface{}) (interface{}, error) {
 	var reply interface{}
+
+	if args != nil {
+		argsB, _ := xml.MarshalIndent(args, "", "  ")
+		fmt.Println("args: ", string(argsB))
+	}
+
 	if err := x.Call(serviceMethod, args, &reply); err != nil {
 		return nil, err
 	}

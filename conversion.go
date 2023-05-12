@@ -82,11 +82,6 @@ func convertFromDynamicToStatic(dynamic interface{}, static interface{}) error {
 		fmt.Println("static: ", string(replyXmlb))
 	}
 
-	if dynamic != nil {
-		replyXmlb, _ := xml.MarshalIndent(dynamic, "", "  ")
-		fmt.Println("dynamic: ", string(replyXmlb))
-	}
-
 	return nil
 }
 
