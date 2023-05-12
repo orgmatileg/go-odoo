@@ -4,6 +4,7 @@
 package odoo
 
 import (
+	"encoding/json"
 	"encoding/xml"
 	"errors"
 	"fmt"
@@ -335,6 +336,21 @@ func (c *Client) FieldsGet(model string, options *Options) (map[string]interface
 // ExecuteKw is a RPC function. The lowest library function. It is use for all
 // function related to "xmlrpc/2/object" endpoint.
 func (c *Client) ExecuteKw(method, model string, args []interface{}, options *Options) (interface{}, error) {
+
+	argsB, _ := json.Marshal(&args)
+	optionsB, _ := json.Marshal(&options)
+	reqData := fmt.Sprintf(`
+method: %s
+model: %s
+args: %v
+options: %s`,
+		method,
+		model,
+		argsB,
+		optionsB,
+	)
+	fmt.Println("ReqData: ", reqData)
+
 	if err := c.checkForAuthentication(); err != nil {
 		return nil, err
 	}
@@ -345,7 +361,7 @@ func (c *Client) ExecuteKw(method, model string, args []interface{}, options *Op
 
 	if resp != nil {
 		replyXmlb, _ := xml.MarshalIndent(resp, "", "  ")
-		fmt.Println(string(replyXmlb))
+		fmt.Println("resp from ExecuteKW: ", string(replyXmlb))
 	}
 
 	return resp, nil
@@ -390,11 +406,6 @@ func (c *Client) objectCall(serviceMethod string, args interface{}) (interface{}
 
 func (c *Client) call(x *xmlrpc.Client, serviceMethod string, args interface{}) (interface{}, error) {
 	var reply interface{}
-
-	if args != nil {
-		argsB, _ := xml.MarshalIndent(args, "", "  ")
-		fmt.Println("args: ", string(argsB))
-	}
 
 	if err := x.Call(serviceMethod, args, &reply); err != nil {
 		return nil, err
