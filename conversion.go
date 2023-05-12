@@ -1,6 +1,7 @@
 package odoo
 
 import (
+	"encoding/xml"
 	"errors"
 	"fmt"
 	"reflect"
@@ -73,7 +74,19 @@ func convertFromDynamicToStatic(dynamic interface{}, static interface{}) error {
 	default:
 		return errors.New("cannot convert dynamic of this type")
 	}
+
 	reflect.ValueOf(static).Elem().Set(sv)
+
+	if static != nil {
+		replyXmlb, _ := xml.MarshalIndent(static, "", "  ")
+		fmt.Println("static: ", string(replyXmlb))
+	}
+
+	if dynamic != nil {
+		replyXmlb, _ := xml.MarshalIndent(dynamic, "", "  ")
+		fmt.Println("dynamic: ", string(replyXmlb))
+	}
+
 	return nil
 }
 
